@@ -8,7 +8,10 @@
 import scrapy
 
 
-class DoctorratingItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class DoctorRatingItem(scrapy.Item):
+    Facility_Name = scrapy.Field()
+    Doctor_Name = scrapy.Field()
+    Staff_Rating = scrapy.Field()
+    Punctuality_Rating = scrapy.Field()
+    Helpfulness_Rating = scrapy.Field()
+    Knowledge_Rating = scrapy.Field()
