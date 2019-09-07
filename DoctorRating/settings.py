@@ -90,3 +90,5 @@ ITEM_PIPELINES = {
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 COMMANDS_MODULE = 'DoctorRating.commands'
+
+# LOG_FILE = 'DoctorRatingSpider.log'
