@@ -1,3 +1,4 @@
-*.output
+*.log
 *.idea
 *.csv
+**/__pycache__/**
