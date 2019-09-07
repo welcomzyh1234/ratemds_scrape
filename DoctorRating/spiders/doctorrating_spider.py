@@ -30,15 +30,17 @@ def parse_facilities(response):
 
 
 def parse_facility_doctors(response, facility_name):
-    for doctor in response.css('div.doctor-profile h2.search-item-doctor-name a'):
+    doctors = response.css('div.doctor-profile h2.search-item-doctor-name a')
+    for doctor in doctors:
         doctor_name = doctor.css('::text').get()
         cb_kwargs = dict(facility_name=facility_name, doctor_name=doctor_name, rating_matrix=list())
         yield response.follow(doctor.attrib['href'], parse_doctor_ratings, cb_kwargs=cb_kwargs)
 
-    next_page_href = get_next_page_href(response)
-    if next_page_href is not None:
-        yield response.follow(__get_doctor_next_page_href(next_page_href), parse_facility_doctors,
-                              cb_kwargs=dict(facility_name=facility_name))
+    if len(doctors) != 0:
+        next_page_href = get_next_page_href(response)
+        if next_page_href is not None:
+            yield response.follow(__get_doctor_next_page_href(next_page_href), parse_facility_doctors,
+                                  cb_kwargs=dict(facility_name=facility_name))
 
 
 def parse_doctor_ratings(response, facility_name, doctor_name, rating_matrix):
