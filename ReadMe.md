@@ -9,3 +9,4 @@
 ### Worth Noting
 * Some rating is lacking **staff** rating, such as the last rating [here](https://www.ratemds.com/doctor-ratings/40769/Dr-Kathleen+C.-Kobashi-Seattle-WA.html), which I think is rateMds.com website bug and the missing value should be 5.
 * Some doctor is serving different facilities, and they would be only scraped once for the first facility scrapy met and won't be scraped again for another facility. So the output csv doesn't correctly reveal doctors' facilities.
+* It seems crawl pages from [1, 20000, 40000 ... ] concurrently would lead to Website crash. Recommend crawl once for 10000 pages in total, export each 1000 pages results to different files, and then concatenate them using pandas. Or can crawl each 10000 pages to same exporting file since the code would append each result to the same file. Just remember to remove duplicate csv header produced by this manner.

@@ -2,7 +2,7 @@ import os
 
 from DoctorRating.spiders.doctorrating_spiders import DoctorRatingSpider1, DoctorRatingSpider2, \
     DoctorRatingSpider3, DoctorRatingSpider4, DoctorRatingSpider5, DoctorRatingSpider6, DoctorRatingSpider7, \
-    DoctorRatingSpider8, DoctorRatingSpider9
+    DoctorRatingSpider8, DoctorRatingSpider9, DoctorRatingSpider10
 from scrapy.commands import ScrapyCommand
 from scrapy.crawler import CrawlerProcess
 from scrapy.exceptions import UsageError
@@ -64,4 +64,5 @@ class Command(ScrapyCommand):
         process.crawl(DoctorRatingSpider7)
         process.crawl(DoctorRatingSpider8)
         process.crawl(DoctorRatingSpider9)
+        process.crawl(DoctorRatingSpider10)
         process.start()

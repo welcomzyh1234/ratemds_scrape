@@ -20,7 +20,7 @@ def parse_facility_doctors(response, facility_name):
     doctors = response.css('div.doctor-profile h2.search-item-doctor-name a')
     for doctor in doctors:
         doctor_name = doctor.css('::text').get()
-        cb_kwargs = dict(facility_name=facility_name, doctor_name=doctor_name, rating_matrix=list())
+        cb_kwargs = dict(facility_name=facility_name, doctor_name=doctor_name)
         yield response.follow(doctor.attrib['href'], parse_doctor_ratings, cb_kwargs=cb_kwargs)
 
     if len(doctors) != 0:
@@ -30,25 +30,42 @@ def parse_facility_doctors(response, facility_name):
                                   cb_kwargs=dict(facility_name=facility_name))
 
 
-def parse_doctor_ratings(response, facility_name, doctor_name, rating_matrix):
-    rating = np.array([0, 0, 0, 0])
-    for rating in response.css('div.rating-numbers-compact'):
-        rating_strings = rating.css('div.rating-number span.value::text').getall()
-        rating_matrix.append(get_valid_rating_numbers(rating_strings))
-
-    next_page_href = get_next_page_href(response)
-    if next_page_href is not None:
-        cb_kwargs = dict(facility_name=facility_name, doctor_name=doctor_name, rating_matrix=rating_matrix)
-        yield response.follow(next_page_href, callback=parse_doctor_ratings, cb_kwargs=cb_kwargs)
+def parse_doctor_ratings(response, facility_name, doctor_name):
+    ratings = response.css('div.rating')
+    if has_rating(ratings):
+        for rating in ratings:
+            for rating_values in rating.css('div.rating-numbers-compact'):
+                rating_value_strings = rating_values.css('div.rating-number span.value::text').getall()
+                rating_value_numbers = get_valid_rating_numbers(rating_value_strings)
+            rating_comment = rating.css('div.rating-comment')
+            yield DoctorRatingItem(
+                Facility_Name=facility_name,
+                Doctor_Name=doctor_name,
+                Has_Rating=1,
+                Staff_Rating=rating_value_numbers[0],
+                Punctuality_Rating=rating_value_numbers[1],
+                Helpfulness_Rating=rating_value_numbers[2],
+                Knowledge_Rating=rating_value_numbers[3],
+                Average_Rating=rating_value_numbers.mean().round(FLOAT_DECIMALS),
+                Comment_Text=rating_comment.css('p.rating-comment-body span::text').get(),
+                Comment_Votes=rating_comment.css('p.rating-comment-votes span::text').getall()[-2],
+                Comment_Date=rating_comment.css('p.rating-comment-created a span::text').getall()[-1]
+            )
+        next_page_href = get_next_page_href(response)
+        if next_page_href is not None:
+            cb_kwargs = dict(facility_name=facility_name, doctor_name=doctor_name)
+            yield response.follow(next_page_href, callback=parse_doctor_ratings, cb_kwargs=cb_kwargs)
     else:
-        if has_rating(rating_matrix):
-            rating = np.array(rating_matrix).mean(axis=0).round(FLOAT_DECIMALS)
         yield DoctorRatingItem(
             Facility_Name=facility_name,
             Doctor_Name=doctor_name,
-            Staff_Rating=rating[0],
-            Punctuality_Rating=rating[1],
-            Helpfulness_Rating=rating[2],
-            Knowledge_Rating=rating[3],
-            Average_Rating=rating.mean().round(FLOAT_DECIMALS)
+            Has_Rating=0,
+            Staff_Rating=None,
+            Punctuality_Rating=None,
+            Helpfulness_Rating=None,
+            Knowledge_Rating=None,
+            Average_Rating=None,
+            Comment_Text=None,
+            Comment_Votes=None,
+            Comment_Date=None
         )

@@ -11,8 +11,12 @@ import scrapy
 class DoctorRatingItem(scrapy.Item):
     Facility_Name = scrapy.Field()
     Doctor_Name = scrapy.Field()
+    Has_Rating = scrapy.Field()
     Staff_Rating = scrapy.Field()
     Punctuality_Rating = scrapy.Field()
     Helpfulness_Rating = scrapy.Field()
     Knowledge_Rating = scrapy.Field()
     Average_Rating = scrapy.Field()
+    Comment_Text = scrapy.Field()
+    Comment_Votes = scrapy.Field()
+    Comment_Date = scrapy.Field()
