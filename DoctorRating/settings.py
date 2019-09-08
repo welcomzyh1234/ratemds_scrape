@@ -91,4 +91,5 @@ ITEM_PIPELINES = {
 
 COMMANDS_MODULE = 'DoctorRating.commands'
 
-# LOG_FILE = 'DoctorRatingSpider.log'
+# LOG_FILE = 'aaa.log'
+# LOG_LEVEL = 'INFO'

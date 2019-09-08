@@ -15,3 +15,4 @@ class DoctorRatingItem(scrapy.Item):
     Punctuality_Rating = scrapy.Field()
     Helpfulness_Rating = scrapy.Field()
     Knowledge_Rating = scrapy.Field()
+    Average_Rating = scrapy.Field()

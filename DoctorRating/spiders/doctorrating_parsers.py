@@ -8,10 +8,10 @@ from DoctorRating.spiders.doctorrating_helpers import get_next_page_href, get_va
 
 def parse_facilities(response):
     for facility in response.css('div.search-item'):
-        facility_name = facility.css('h2.search-item-location-name::text').get()
+        facility_name = facility.css('h2.search-item-location-name::text').get().upper()
         facility_href = facility.css('a.search-item-location-link::attr(href)').get() + DOCTORS_HREF
 
-        if facility_name not in FACILITY_FILTER:
+        if facility_name in FACILITY_FILTER:
             yield response.follow(facility_href, parse_facility_doctors,
                                   cb_kwargs=dict(facility_name=facility_name))
 
@@ -31,7 +31,7 @@ def parse_facility_doctors(response, facility_name):
 
 
 def parse_doctor_ratings(response, facility_name, doctor_name, rating_matrix):
-    rating = [0, 0, 0, 0]
+    rating = np.array([0, 0, 0, 0])
     for rating in response.css('div.rating-numbers-compact'):
         rating_strings = rating.css('div.rating-number span.value::text').getall()
         rating_matrix.append(get_valid_rating_numbers(rating_strings))
@@ -49,5 +49,6 @@ def parse_doctor_ratings(response, facility_name, doctor_name, rating_matrix):
             Staff_Rating=rating[0],
             Punctuality_Rating=rating[1],
             Helpfulness_Rating=rating[2],
-            Knowledge_Rating=rating[3]
+            Knowledge_Rating=rating[3],
+            Average_Rating=rating.mean().round(FLOAT_DECIMALS)
         )

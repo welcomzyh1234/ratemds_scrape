@@ -3,11 +3,13 @@ import logging
 import scrapy
 
 from DoctorRating.spiders.doctorrating_parsers import parse_facilities
+from scrapy.utils.log import configure_logging
 
+configure_logging(install_root_handler=False)
 logging.basicConfig(
     filename='DoctorRatingSpider.log',
     format='%(asctime)s [%(name)s] %(levelname)s: %(message)s',
-    level=logging.DEBUG
+    level=logging.INFO
 )
 
 
@@ -16,7 +18,7 @@ class DoctorRatingSpider1(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(1, 1000)]
+                range(1, 20000)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
 
@@ -26,7 +28,7 @@ class DoctorRatingSpider2(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(1000, 2000)]
+                range(20000, 40000)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
 
@@ -36,7 +38,7 @@ class DoctorRatingSpider3(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(2000, 3000)]
+                range(40000, 60000)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
 
@@ -46,7 +48,7 @@ class DoctorRatingSpider4(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(3000, 4000)]
+                range(60000, 80000)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
 
@@ -56,7 +58,7 @@ class DoctorRatingSpider5(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(4000, 5000)]
+                range(80000, 100000)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
 
@@ -66,7 +68,7 @@ class DoctorRatingSpider6(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(5000, 6000)]
+                range(100000, 120000)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
 
@@ -76,7 +78,7 @@ class DoctorRatingSpider7(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(6000, 7000)]
+                range(120000, 140000)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
 
@@ -86,7 +88,7 @@ class DoctorRatingSpider8(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(7000, 8000)]
+                range(140000, 160000)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
 
@@ -96,6 +98,6 @@ class DoctorRatingSpider9(scrapy.Spider):
 
     def start_requests(self):
         urls = ['https://www.ratemds.com/facilities/?country=us&page={}'.format(page_num) for page_num in
-                range(8000, 9000)]
+                range(160000, 172631)]
         for url in urls:
             yield scrapy.Request(url=url, callback=parse_facilities)
